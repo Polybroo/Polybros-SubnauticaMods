@@ -7,14 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polynautica", "Polynautica.
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Dev|Any CPU = Dev|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{86F7D7C3-2729-465E-9795-AB91CD1D0EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{86F7D7C3-2729-465E-9795-AB91CD1D0EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{86F7D7C3-2729-465E-9795-AB91CD1D0EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{86F7D7C3-2729-465E-9795-AB91CD1D0EA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86F7D7C3-2729-465E-9795-AB91CD1D0EA6}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
+		{86F7D7C3-2729-465E-9795-AB91CD1D0EA6}.Dev|Any CPU.Build.0 = Dev|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
