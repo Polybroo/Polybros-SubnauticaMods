@@ -1,0 +1,9 @@
+﻿{
+    "Id": "Polynautica",
+    "DisplayName": "Polynautica",
+    "Author": "Polybro",
+    "Version": "0.0.2",
+    "Enable": true,
+    "AssemblyName": "Polynautica.dll",
+    "Game": "Subnautica"
+}
