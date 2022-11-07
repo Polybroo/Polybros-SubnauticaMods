@@ -16,35 +16,18 @@ namespace Polynautica
             [HarmonyPrefix]
             public static bool Prefix(MainCameraControl __instance)
 			{
-				//Debug.Log("MainCameraControl loop works!");
 
-				Traverse instanceTraverse = Traverse.Create(__instance);
-
-				Traverse<PlayerController> playerController = instanceTraverse.Field<PlayerController>("playerController");
-				Traverse<UnderWaterTracker> underWaterTracker = instanceTraverse.Field<UnderWaterTracker>("underWaterTracker");
-
-				Traverse<float> swimCameraAnimation = instanceTraverse.Field<float>("swimCameraAnimation");
-				Traverse<float> smoothedSpeed = instanceTraverse.Field<float>("smoothedSpeed");
-				Traverse<float> camShake = instanceTraverse.Field<float>("camShake");
-				Traverse<float> strafeTilt = instanceTraverse.Field<float>("strafeTilt");
-				Traverse<float> impactBob = instanceTraverse.Field<float>("impactBob");
-				Traverse<float> impactForce = instanceTraverse.Field<float>("impactForce");
-				Traverse<float> viewModelLockedYaw = instanceTraverse.Field<float>("viewModelLockedYaw");
-
-				Traverse<bool> wasInLockedMode = instanceTraverse.Field<bool>("wasInLockedMode");
-				Traverse<bool> wasInLookAroundMode = instanceTraverse.Field<bool>("wasInLookAroundMode");
-
-				if (underWaterTracker.Value.isUnderWater)
+				if (__instance.underWaterTracker.isUnderWater)
 				{
-					swimCameraAnimation.Value = Mathf.Clamp01(swimCameraAnimation.Value + Time.deltaTime);
+					__instance.swimCameraAnimation = Mathf.Clamp01(__instance.swimCameraAnimation + Time.deltaTime);
 				}
 				else
 				{
-					swimCameraAnimation.Value = Mathf.Clamp01(swimCameraAnimation.Value - Time.deltaTime);
+					__instance.swimCameraAnimation = Mathf.Clamp01(__instance.swimCameraAnimation - Time.deltaTime);
 				}
 				float num = __instance.minimumY;
 				float num2 = __instance.maximumY;
-				Vector3 velocity = playerController.Value.velocity;
+				Vector3 velocity = __instance.playerController.velocity;
 				bool flag = false;
 				bool flag2 = false;
 				bool flag3 = false;
@@ -60,12 +43,12 @@ namespace Polynautica
 						flag2 = (flag2 || flag4);
 					}
 				}
-				if (flag2 != wasInLockedMode.Value || __instance.lookAroundMode != wasInLookAroundMode.Value)
+				if (flag2 != __instance.wasInLockedMode || __instance.lookAroundMode != __instance.wasInLookAroundMode)
 				{
 					__instance.camRotationX = 0f;
 					__instance.camRotationY = 0f;
-					wasInLockedMode.Value = flag2;
-					wasInLookAroundMode.Value = __instance.lookAroundMode;
+					__instance.wasInLockedMode = flag2;
+					__instance.wasInLookAroundMode = __instance.lookAroundMode;
 				}
 				bool flag5 = (!__instance.cinematicMode || (__instance.lookAroundMode && !flag)) && __instance.mouseLookEnabled && (flag3 || AvatarInputHandler.main == null || AvatarInputHandler.main.IsEnabled() || Builder.isPlacing);
 				if (flag3 && !XRSettings.enabled && !inExosuit)
@@ -106,12 +89,13 @@ namespace Polynautica
 					vector *= Player.main.mesmerizedSpeedMultiplier;
 				}
 
-				instanceTraverse.Method("UpdateCamShake").GetValue();
+				__instance.UpdateCamShake();
+
 				if (__instance.cinematicMode && !__instance.lookAroundMode)
 				{
 					__instance.camRotationX = Mathf.LerpAngle(__instance.camRotationX, 0f, Time.deltaTime * 2f);
 					__instance.camRotationY = Mathf.LerpAngle(__instance.camRotationY, 0f, Time.deltaTime * 2f);
-					__instance.transform.localEulerAngles = new Vector3(-__instance.camRotationY + camShake.Value, __instance.camRotationX, 0f);
+					__instance.transform.localEulerAngles = new Vector3(-__instance.camRotationY + __instance.camShake, __instance.camRotationX, 0f);
 				}
 				else if (flag2)
 				{
@@ -136,7 +120,7 @@ namespace Polynautica
 						{
 							__instance.camRotationY = Mathf.LerpAngle(__instance.camRotationY, 0f, Time.deltaTime * 10f);
 						}
-						__instance.cameraOffsetTransform.localEulerAngles = new Vector3(-__instance.camRotationY, __instance.camRotationX + camShake.Value, 0f);
+						__instance.cameraOffsetTransform.localEulerAngles = new Vector3(-__instance.camRotationY, __instance.camRotationX + __instance.camShake, 0f);
 					}
 				}
 				else
@@ -144,27 +128,28 @@ namespace Polynautica
 					__instance.rotationX += vector.x;
 					__instance.rotationY += vector.y;
 					__instance.rotationY = Mathf.Clamp(__instance.rotationY, __instance.minimumY, __instance.maximumY);
-					__instance.cameraUPTransform.localEulerAngles = new Vector3(Mathf.Min(0f, -__instance.rotationY + camShake.Value), 0f, 0f);
-					transform.localEulerAngles = new Vector3(Mathf.Max(0f, -__instance.rotationY + camShake.Value), __instance.rotationX, 0f);
+					__instance.cameraUPTransform.localEulerAngles = new Vector3(Mathf.Min(0f, -__instance.rotationY + __instance.camShake), 0f, 0f);
+					transform.localEulerAngles = new Vector3(Mathf.Max(0f, -__instance.rotationY + __instance.camShake), __instance.rotationX, 0f);
 				}
-				instanceTraverse.Method("UpdateStrafeTilt").GetValue();
-				Vector3 localEulerAngles = __instance.transform.localEulerAngles + new Vector3(0f, 0f, __instance.cameraAngleMotion.y * __instance.cameraTiltMod + strafeTilt.Value + camShake.Value * 0.5f);
+				__instance.UpdateStrafeTilt();
+
+				Vector3 localEulerAngles = __instance.transform.localEulerAngles + new Vector3(0f, 0f, __instance.cameraAngleMotion.y * __instance.cameraTiltMod + __instance.strafeTilt + __instance.camShake * 0.5f);
 				float num4 = 0f - __instance.skin;
-				if (!flag2 && instanceTraverse.Method("GetCameraBob").GetValue<bool>())
+				if (!flag2 && __instance.GetCameraBob())
 				{
 					float to = Mathf.Min(1f, velocity.magnitude / 5f);
-					smoothedSpeed.Value = UWE.Utils.Slerp(smoothedSpeed.Value, to, Time.deltaTime);
-					num4 += (Mathf.Sin(Time.time * 6f) - 1f) * (0.02f + smoothedSpeed.Value * 0.15f) * swimCameraAnimation.Value;
+					__instance.smoothedSpeed = UWE.Utils.Slerp(__instance.smoothedSpeed, to, Time.deltaTime);
+					num4 += (Mathf.Sin(Time.time * 6f) - 1f) * (0.02f + __instance.smoothedSpeed * 0.15f) * __instance.swimCameraAnimation;
 				}
-				if (impactForce.Value > 0f)
+				if (__instance.impactForce > 0f)
 				{
-					impactBob.Value = Mathf.Min(0.9f, impactBob.Value + impactForce.Value * Time.deltaTime);
-					impactForce.Value -= Mathf.Max(1f, impactForce.Value) * Time.deltaTime * 5f;
+					__instance.impactBob = Mathf.Min(0.9f, __instance.impactBob + __instance.impactForce * Time.deltaTime);
+					__instance.impactForce -= Mathf.Max(1f, __instance.impactForce) * Time.deltaTime * 5f;
 				}
-				num4 -= impactBob.Value;
-				if (impactBob.Value > 0f)
+				num4 -= __instance.impactBob;
+				if (__instance.impactBob > 0f)
 				{
-					impactBob.Value = Mathf.Max(0f, impactBob.Value - Mathf.Pow(impactBob.Value, 0.5f) * Time.deltaTime * 3f);
+					__instance.impactBob = Mathf.Max(0f, __instance.impactBob - Mathf.Pow(__instance.impactBob, 0.5f) * Time.deltaTime * 3f);
 				}
 				__instance.transform.localPosition = new Vector3(0f, num4, 0f);
 				__instance.transform.localEulerAngles = localEulerAngles;
@@ -178,7 +163,7 @@ namespace Polynautica
 				{
 					if (flag2 && !flag3)
 					{
-						localEulerAngles2.y = viewModelLockedYaw.Value;
+						localEulerAngles2.y = __instance.viewModelLockedYaw;
 					}
 					else
 					{
@@ -188,10 +173,10 @@ namespace Polynautica
 					{
 						if (!flag2)
 						{
-							Quaternion rotation = playerController.Value.forwardReference.rotation;
+							Quaternion rotation = __instance.playerController.forwardReference.rotation;
 							localEulerAngles2.y = (__instance.gameObject.transform.parent.rotation.GetInverse() * rotation).eulerAngles.y;
 						}
-						localPosition2 = __instance.gameObject.transform.parent.worldToLocalMatrix.MultiplyPoint(playerController.Value.forwardReference.position);
+						localPosition2 = __instance.gameObject.transform.parent.worldToLocalMatrix.MultiplyPoint(__instance.playerController.forwardReference.position);
 					}
 				}
 				__instance.viewModel.transform.localEulerAngles = localEulerAngles2;

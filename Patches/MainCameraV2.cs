@@ -12,10 +12,7 @@ namespace Polynautica
 			[HarmonyPostfix]
 			public static void Postfix(MainCameraV2 __instance)
 			{
-				var traverse = Traverse.Create(__instance);
-				Traverse<int> dcm = traverse.Field<int>("defaultCullingMask");
-				//dcm.Value &= ~(1 << 8);
-				//__instance.RestoreCullingMask();
+				__instance.defaultCullingMask &= ~(1 << 8);
 
 				GameObject copy = GameObject.Instantiate(SNCameraRoot.main.guiCam.gameObject);
 

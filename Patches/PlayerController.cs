@@ -26,11 +26,9 @@ namespace Polynautica
 			public static void Prefix(PlayerController __instance)
 			{
 				NewPlayerController controller = __instance.gameObject.AddComponent<NewPlayerController>();
-				Traverse player = Traverse.Create(Player.main);
-				player.Property("playerController").SetValue(controller);
+				Player.main.playerController = controller;
 
-				Traverse cameraControl = Traverse.Create(GameObject.FindObjectOfType<MainCameraControl>());
-				cameraControl.Field("playerController").SetValue(controller);
+				GameObject.FindObjectOfType<MainCameraControl>().playerController = controller;
 
 				UnityEngine.Object.Destroy(__instance);
 			}

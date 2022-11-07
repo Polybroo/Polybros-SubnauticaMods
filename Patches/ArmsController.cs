@@ -12,13 +12,11 @@ namespace Polynautica
 			[HarmonyPrefix]
 			public static bool Prefix(PlayerController __instance, ref Vector3 __result)
 			{
-				Traverse armsController = Traverse.Create(__instance);
-				Traverse<Player> player = armsController.Field<Player>("player");
 
-				Vector3 velocity = player.Value.playerController.velocity;
-				Transform aimingTransform = player.Value.camRoot.GetAimingTransform();
+				Vector3 velocity = __instance.player.playerController.velocity;
+				Transform aimingTransform = __instance.player.camRoot.GetAimingTransform();
 				Vector3 result = Vector3.zero;
-				if (player.Value.IsUnderwater() || !player.Value.groundMotor.IsGrounded())
+				if (__instance.player.IsUnderwater() || !__instance.player.groundMotor.IsGrounded())
 				{
 					result = aimingTransform.InverseTransformDirection(velocity);
 				}
