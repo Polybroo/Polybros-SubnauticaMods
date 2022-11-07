@@ -3,31 +3,28 @@ using UnityEngine;
 
 namespace Polynautica
 {
+	[HarmonyPatch(typeof(MainCameraV2))]
 	class MainCameraV2Patch
 	{
-		[HarmonyPatch(typeof(MainCameraV2))]
-		[HarmonyPatch("Start")]
-		internal class Start
+		[HarmonyPatch(nameof(MainCameraV2.Start))]
+		[HarmonyPostfix()]
+		public static void Start(MainCameraV2 __instance)
 		{
-			[HarmonyPostfix]
-			public static void Postfix(MainCameraV2 __instance)
-			{
-				__instance.defaultCullingMask &= ~(1 << 8);
+			//__instance.defaultCullingMask &= ~(1 << 8);
 
-				GameObject copy = GameObject.Instantiate(SNCameraRoot.main.guiCam.gameObject);
+			GameObject copy = GameObject.Instantiate(SNCameraRoot.main.guiCam.gameObject);
 
-				Transform parent = SNCameraRoot.main.mainCam.transform.parent;
-				copy.transform.parent = parent;
-				copy.transform.localEulerAngles = Vector3.zero;
-				copy.transform.localPosition = Vector3.zero;
-				Camera cam = copy.GetComponent<Camera>();
-				cam.cullingMask = LayerMask.GetMask("Viewmodel");
-				cam.clearFlags = CameraClearFlags.Depth;
-				cam.depth = 2;
-				cam.depthTextureMode = DepthTextureMode.None & DepthTextureMode.Depth & DepthTextureMode.DepthNormals & DepthTextureMode.MotionVectors;
-				cam.renderingPath = RenderingPath.DeferredShading;
-				cam.enabled = false;
-			}
+			Transform parent = SNCameraRoot.main.mainCam.transform.parent;
+			copy.transform.parent = parent;
+			copy.transform.localEulerAngles = Vector3.zero;
+			copy.transform.localPosition = Vector3.zero;
+			Camera cam = copy.GetComponent<Camera>();
+			cam.cullingMask = LayerMask.GetMask("Viewmodel");
+			cam.clearFlags = CameraClearFlags.Depth;
+			cam.depth = 2;
+			cam.depthTextureMode = DepthTextureMode.None & DepthTextureMode.Depth & DepthTextureMode.DepthNormals & DepthTextureMode.MotionVectors;
+			cam.renderingPath = RenderingPath.DeferredShading;
+			cam.enabled = false;
 		}
 	}
 }

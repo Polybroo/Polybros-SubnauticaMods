@@ -6,32 +6,23 @@ namespace Polynautica
 	/// <summary>
 	/// Find out why quick slots and cinematic animations won't work
 	/// </summary>
+	[HarmonyPatch(typeof(PlayerController))]
 	class PlayerControllerPatch
 	{
-		[HarmonyPatch(typeof(PlayerController))]
-		[HarmonyPatch("FixedUpdate")]
-		internal class FixedUpdate
-		{
-			[HarmonyPrefix]
-			public static bool Prefix(PlayerController __instance)
-			{
-				return false;
-			}
-		}
-		[HarmonyPatch(typeof(PlayerController))]
-		[HarmonyPatch("Start")]
-		internal class Start
-		{
-			[HarmonyPrefix]
-			public static void Prefix(PlayerController __instance)
-			{
-				NewPlayerController controller = __instance.gameObject.AddComponent<NewPlayerController>();
-				Player.main.playerController = controller;
+		[HarmonyPatch(nameof(PlayerController.FixedUpdate))]
+		[HarmonyPrefix()]
+		public static bool FixedUpdate(PlayerController __instance) => false;
 
-				GameObject.FindObjectOfType<MainCameraControl>().playerController = controller;
+		[HarmonyPatch(nameof(PlayerController.Start))]
+		[HarmonyPrefix()]
+		public static void Start(PlayerController __instance)
+		{
+			NewPlayerController controller = __instance.gameObject.AddComponent<NewPlayerController>();
+			Player.main.playerController = controller;
 
-				UnityEngine.Object.Destroy(__instance);
-			}
+			GameObject.FindObjectOfType<MainCameraControl>().playerController = controller;
+
+			UnityEngine.Object.Destroy(__instance);
 		}
 	}
 }

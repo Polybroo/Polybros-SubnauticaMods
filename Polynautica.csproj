@@ -34,9 +34,6 @@
     <Compile Include="Patches\WaterscapeVolume.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="mod.json" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>E:\SteamLibrary\steamapps\common\Subnautica\BepInEx\core\0Harmony.dll</HintPath>
     </Reference>

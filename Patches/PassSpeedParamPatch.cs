@@ -2,18 +2,15 @@
 
 namespace Polynautica
 {
+	[HarmonyPatch(typeof(PassSpeedParam))]
 	class PassSpeedParamPatch
 	{
-		[HarmonyPatch(typeof(PassSpeedParam))]
-		[HarmonyPatch("GetParamValue")]
-		internal class GetParamValue
+		[HarmonyPatch(nameof(PassSpeedParam.GetParamValue))]
+		[HarmonyPrefix()]
+		public static bool Prefix(ref float __result)
 		{
-			[HarmonyPrefix]
-			public static bool Prefix(ref float __result)
-			{
-				__result = Utils.GetLocalPlayerComp().playerController.velocity.magnitude;
-				return true;
-			}
+			__result = Utils.GetLocalPlayerComp().playerController.velocity.magnitude;
+			return true;
 		}
 	}
 }
