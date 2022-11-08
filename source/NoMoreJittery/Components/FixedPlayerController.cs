@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Polynautica
+namespace NoMoreJittery
 {
-	/// <summary>
-	/// Copy-paste of PlayerController with small fixes
-	/// </summary>
-	public class NewPlayerController : PlayerController
+	public class FixedPlayerController : PlayerController
     {
         private void Awake()
         {
@@ -29,14 +26,14 @@ namespace Polynautica
 
         private void Update()
         {
-            if (base.activeController is UnderwaterMotor)
-                return;
-            base.UpdateController();
+            if (this.player.rigidBody.isKinematic) base.UpdateController();
+            if (base.activeController != base.groundController) base.velocity = base.player.rigidBody.velocity;
+            
         }
         private void FixedUpdate()
         {
-            if (base.activeController is UnderwaterMotor)
-                base.UpdateController();
+            base.HandleUnderWaterState();
+            if (!base.player.rigidBody.isKinematic) base.UpdateController();
         }
     }
 }

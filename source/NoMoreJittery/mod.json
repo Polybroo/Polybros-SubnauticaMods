@@ -1,0 +1,9 @@
+﻿{
+    "Id": "polybro_nomorejittery",
+    "DisplayName": "No More Jittery",
+    "Author": "Polybro",
+    "Version": "1.0.0",
+    "Enable": true,
+    "AssemblyName": "NoMoreJittery.dll",
+    "Game": "Subnautica"
+}

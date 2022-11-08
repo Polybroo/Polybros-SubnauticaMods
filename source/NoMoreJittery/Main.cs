@@ -3,23 +3,21 @@ using HarmonyLib;
 using QModManager.API.ModLoading;
 using Logger = QModManager.Utility.Logger;
 
-namespace Polynautica
+namespace NoMoreJittery
 {
     [QModCore]
-    public class Bootstrap
+    public class Main
     {
         [QModPatch]
         public static void Patch()
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
-            string modName = $"polybroo_{assembly.GetName().Name}";
-
-            Logger.Log(Logger.Level.Info, "Patching" + modName);
+            string modName = $"polybro_{assembly.GetName().Name}";
 
             Harmony harmony = new Harmony(modName);
             harmony.PatchAll(assembly);
 
-            Logger.Log(Logger.Level.Info, "Patched successfully. Welcome to Polynatica!");
+            Logger.Log(Logger.Level.Info, "Thanks for using my mod!");
         }
     }
 }

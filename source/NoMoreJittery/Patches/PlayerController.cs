@@ -1,11 +1,8 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace Polynautica
+namespace NoMoreJittery
 {
-	/// <summary>
-	/// Find out why quick slots and cinematic animations won't work
-	/// </summary>
 	[HarmonyPatch(typeof(PlayerController))]
 	class PlayerControllerPatch
 	{
@@ -17,10 +14,13 @@ namespace Polynautica
 		[HarmonyPrefix()]
 		public static void Start(PlayerController __instance)
 		{
-			NewPlayerController controller = __instance.gameObject.AddComponent<NewPlayerController>();
-			Player.main.playerController = controller;
+			Player player = Player.main;
+			MainCameraControl camControl = GameObject.FindObjectOfType<MainCameraControl>();
+			FixedPlayerController newController = __instance.gameObject.AddComponent<FixedPlayerController>();
 
-			GameObject.FindObjectOfType<MainCameraControl>().playerController = controller;
+			player.playerController = newController;
+			camControl.playerController = newController;
+			player.rigidBody.interpolation = RigidbodyInterpolation.Interpolate;
 
 			UnityEngine.Object.Destroy(__instance);
 		}

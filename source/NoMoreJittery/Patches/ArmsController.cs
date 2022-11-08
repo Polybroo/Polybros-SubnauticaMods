@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace Polynautica
+namespace NoMoreJittery
 {
 	[HarmonyPatch(typeof(ArmsController))]
 	class ArmsControllerPatch
@@ -10,7 +10,6 @@ namespace Polynautica
 		[HarmonyPrefix()]
 		public static bool GetRelativeVelocity(ArmsController __instance, ref Vector3 __result)
 		{
-
 			Vector3 velocity = __instance.player.playerController.velocity;
 			Transform aimingTransform = __instance.player.camRoot.GetAimingTransform();
 			Vector3 result = Vector3.zero;

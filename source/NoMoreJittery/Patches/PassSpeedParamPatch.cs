@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace Polynautica
+namespace NoMoreJittery
 {
 	[HarmonyPatch(typeof(PassSpeedParam))]
 	class PassSpeedParamPatch

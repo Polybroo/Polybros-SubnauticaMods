@@ -7,8 +7,8 @@
     <ProjectGuid>{86F7D7C3-2729-465E-9795-AB91CD1D0EA6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Polynautica</RootNamespace>
-    <AssemblyName>Polynautica</AssemblyName>
+    <RootNamespace>NoMoreJittery</RootNamespace>
+    <AssemblyName>NoMoreJittery</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -16,7 +16,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Dev|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>build\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,14 +24,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Patches\ArmsController.cs" />
-    <Compile Include="Patches\MainCameraControl.cs" />
-    <Compile Include="Bootstrap.cs" />
-    <Compile Include="Components\NewPlayerController.cs" />
-    <Compile Include="Patches\MainCameraV2.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="Components\FixedPlayerController.cs" />
     <Compile Include="Patches\PassSpeedParamPatch.cs" />
     <Compile Include="Patches\PlayerController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Patches\WaterscapeVolume.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -70,6 +67,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>E:\SteamLibrary\steamapps\common\Subnautica\Subnautica_Data\Managed\UnityEngine.XRModule.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mod.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
