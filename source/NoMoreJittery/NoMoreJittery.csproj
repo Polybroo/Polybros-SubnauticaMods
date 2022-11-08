@@ -23,11 +23,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Patches\ArmsController.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="Components\FixedPlayerController.cs" />
-    <Compile Include="Patches\PassSpeedParamPatch.cs" />
-    <Compile Include="Patches\PlayerController.cs" />
+    <Compile Include="FixedPlayerController.cs" />
+    <Compile Include="PlayerController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

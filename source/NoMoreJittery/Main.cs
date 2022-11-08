@@ -12,7 +12,7 @@ namespace NoMoreJittery
         public static void Patch()
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
-            string modName = $"polybro_{assembly.GetName().Name}";
+            string modName = $"polybro_nomorejittery";
 
             Harmony harmony = new Harmony(modName);
             harmony.PatchAll(assembly);
