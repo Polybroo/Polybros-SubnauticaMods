@@ -1,7 +1,5 @@
-# Polynautica
-A mod that fixes annoying bugs, improves gameplay and visuals of the game.
+![logo](https://github.com/Polybroo/Polybros-SubnauticaMods/blob/Latest/content/logo.png?raw=true)
+Welcome, I'm glad you visited my repository! Here you can see mods I develop.
 
-## Current TODO list
-* Finish player jitteriness fix
-* Reimplement camera control
-* Find out how to change color of the ocean
+## Download mods:
+* [No More Jittery](https://github.com/Polybroo/Polybros-SubnauticaMods/releases/download/Latest/NoMoreJittery.zip)
